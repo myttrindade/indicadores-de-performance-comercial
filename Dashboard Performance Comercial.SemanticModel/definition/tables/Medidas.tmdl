@@ -1,0 +1,1385 @@
+table Medidas
+	lineageTag: 1917cdcd-9c3c-4739-82af-1c6982fcaa47
+
+	measure Faturamento =
+			
+			
+			
+			
+			CALCULATE(
+			    SUMX(
+			        fVendas,
+			        fVendas[Valor Unit] * fVendas[Qtde]
+			    ),
+			    dStatus[Id Status] = 1
+			)
+		formatString: "R$"\ #,0;-"R$"\ #,0;"R$"\ #,0
+		displayFolder: 02.Valores Totais
+		lineageTag: 3f31b7e4-3202-4ee2-a8ea-400b6eac08ca
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure Custo = ```
+			
+			CALCULATE(
+			    SUMX(
+			        fVendas,
+			        fVendas[Custo Unit] * fVendas[Qtde]
+			    ),
+			    dStatus[Id Status] = 1 
+			)
+			```
+		displayFolder: 02.Valores Totais
+		lineageTag: 4d17dd35-ed53-408d-9a67-db4286a97dcb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Despesa =
+			
+			CALCULATE(
+			    SUMX(
+			        fVendas,
+			        fVendas[Despesa Unit] * fVendas[Qtde]
+			    ),
+			    dStatus[Id Status] = 1
+			)
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 02.Valores Totais
+		lineageTag: 8d3458cb-0a4c-4f80-9a36-046d4fc1ce49
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure Impostos =
+			
+			CALCULATE(
+			    SUMX(
+			        fVendas,
+			        fVendas[Impostos Unit] * fVendas[Qtde]
+			    ),
+			    dStatus[Id Status] = 1
+			)
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 02.Valores Totais
+		lineageTag: ef48234e-8a0a-48fe-8667-379321107249
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure Comissao =
+			
+			CALCULATE(
+			    SUMX(
+			        fVendas,
+			        fVendas[Comissão Unit] * fVendas[Qtde]
+			    ),
+			    dStatus[Id Status] = 1
+			)
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 02.Valores Totais
+		lineageTag: de74de30-8208-4b02-b1a8-06bbc2ae731a
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure Abatimento =
+			
+			[Custo] + [Despesa] + [Impostos] + [Comissao]
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 02.Valores Totais
+		lineageTag: 6346a4a3-3a2f-462a-87b3-ce61ce868589
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure Resultado =
+			
+			[Faturamento] - [Abatimento]
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 02.Valores Totais
+		lineageTag: 6e7a0d2a-3e9b-4231-95cc-e72cd15e1b72
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure '% Margem Contribuição' =
+			
+			DIVIDE(
+			    [Resultado],
+			    [Faturamento]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 01.Percentagens\Margem
+		lineageTag: ce29d8e1-d1b7-46cf-8d04-24e98f375020
+
+	measure '% Margem Contribuição Total' =
+			
+			VAR FaturamentoFixo =
+			CALCULATE(
+			    [Faturamento],
+			    ALLSELECTED(fVendas)
+			)
+			
+			RETURN
+			
+			DIVIDE(
+			    [Faturamento],
+			    FaturamentoFixo,
+			    "--"
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 01.Percentagens\Margem
+		lineageTag: ca54d2a3-6d98-4526-87d6-b01bc7ac58fc
+
+	measure '% Margem Contribuição Vendedores' =
+			
+			VAR FaturamentoFixo =
+			CALCULATE(
+			    [Faturamento],
+			    ALLSELECTED(dVendedores[Vendedor])
+			)
+			
+			RETURN
+			
+			DIVIDE(
+			    [Faturamento],
+			    FaturamentoFixo,
+			    "--"
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 01.Percentagens\Margem
+		lineageTag: 6697446d-f4d7-499b-8009-f831b34354bf
+
+	measure 'Positivação Clientes' =
+			
+			-- Refere-se a quantidade de clientes que efetuaram compra
+			DISTINCTCOUNT(fVendas[Id Cliente])
+		formatString: 0
+		displayFolder: 02.Valores Totais
+		lineageTag: ad797056-4a1e-4623-8067-f4603dab8f59
+
+	measure 'Positivação Produtos' =
+			
+			-- Refere-se aos produtos que foram comprados
+			DISTINCTCOUNT(fVendas[Id Produto])
+		formatString: 0
+		displayFolder: 02.Valores Totais
+		lineageTag: 27ff410f-8906-4888-b7f8-c8f91c378f0c
+
+	measure 'Faturamento >70mi por Vendedor' =
+			
+			SUMX(
+			    VALUES(
+			        dCalendario[Ano]
+			    ),
+			    CALCULATE(
+			        [Faturamento],
+			        FILTER(
+			            VALUES(
+			                dVendedores[Id Vendedor]
+			            ),
+			            [Faturamento] > 70000000
+			        )
+			    )
+			)
+		displayFolder: 02.Valores Totais
+		lineageTag: 2fc90774-c84d-4821-bc44-c80db5dd662c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Faturamento LY' = ```
+			
+			
+			VAR vUltimaDataVenda = 
+			CALCULATE(
+			    MAX(fVendas[Data Pedido]),
+			    ALLSELECTED(
+			        dCalendario
+			    )
+			)
+			
+			VAR vTabela = 
+			FILTER(
+			    VALUES(dCalendario[Data]),
+			    dCalendario[Data] <= vUltimaDataVenda
+			)
+			
+			RETURN
+			    
+			    
+			    CALCULATE(
+			        [Faturamento],
+			        SAMEPERIODLASTYEAR(
+			            vTabela
+			        )
+			    )
+			```
+		displayFolder: 03.Valores Temporais\Faturamento
+		lineageTag: 4a2fba44-12a3-4202-a9a6-b3a4044aca29
+
+		formatStringDefinition =
+				VAR vValor = [Faturamento LY]
+				
+				RETURN
+				SWITCH(
+				    TRUE(),
+				    ABS(vValor) >= 1E9, "0,,,.00 Bi",
+				    ABS(vValor) >= 1E6, "0,,.00 Mi",
+				    ABS(vValor) >= 1E3, "0,.00 K",
+				    "0"
+				)
+
+	measure '% Faturamento YoY' =
+			
+			DIVIDE(
+			    [Faturamento] - [Faturamento LY],
+			    [Faturamento LY]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 01.Percentagens\Faturamento
+		lineageTag: c7b5cd62-c80d-442c-97df-a85ad02d9e73
+
+	measure 'Resultado LY' = ```
+			
+			
+			VAR vUltimaDataVenda = 
+			CALCULATE(
+			    MAX(fVendas[Data Pedido]),
+			    ALLSELECTED(
+			        dCalendario
+			    )
+			)
+			
+			VAR vTabela = 
+			FILTER(
+			    VALUES(dCalendario[Data]),
+			    dCalendario[Data] <= vUltimaDataVenda
+			)
+			
+			RETURN
+			CALCULATE(
+			    [Resultado],
+			    DATEADD(
+			        vTabela,
+			        -1,
+			        YEAR
+			    )
+			)
+			```
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 03.Valores Temporais\Resultado
+		lineageTag: 9684aed5-98a1-4656-8a48-5f9c5ebe0c9a
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure '% Resultado YoY' =
+			
+			DIVIDE(
+			    [Resultado] - [Resultado LY],
+			    [Resultado LY]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 01.Percentagens\Resultado
+		lineageTag: 2e7774f2-4019-4e85-a60c-ba6cd3354837
+
+	measure 'Faturamento YTD (Acumualdo)' = ```
+			
+			VAR vUltimaDataVenda = 
+			CALCULATE(
+			    MAX(fVendas[Data Pedido]),
+			    ALLSELECTED(
+			        dCalendario
+			    )
+			)
+			
+			VAR vTabela =
+			FILTER(
+			    VALUES(dCalendario[Data]),
+			    dCalendario[Data] <= vUltimaDataVenda
+			)
+			
+			RETURN
+			
+			CALCULATE(
+			    [Faturamento],
+			    DATESYTD(
+			        vTabela
+			    )
+			)
+			```
+		displayFolder: 03.Valores Temporais\Faturamento
+		lineageTag: bcf2f480-1229-4471-b291-05b052f9f058
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Faturamento LM (Acumualdo)' = ```
+			
+			VAR vUltimaDataVenda = 
+			CALCULATE(
+			    MAX(fVendas[Data Pedido]),
+			    ALLSELECTED(
+			        dCalendario
+			    )
+			)
+			
+			VAR vTabela =
+			FILTER(
+			    VALUES(dCalendario[Data]),
+			    dCalendario[Data] <= vUltimaDataVenda
+			)
+			
+			RETURN
+			
+			CALCULATE(
+			    [Faturamento],
+			    DATEADD(
+			        vTabela,
+			        -1,
+			        MONTH
+			    )
+			)
+			```
+		displayFolder: 03.Valores Temporais\Faturamento
+		lineageTag: 17630939-8378-4268-8fd3-465682545237
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Rank Vendedor Faturamento' =
+			
+			RANK(
+			    DENSE,
+			    ALLSELECTED(dVendedores[Vendedor]),
+			    ORDERBY(
+			        [Faturamento],     DESC,
+			        [Resultado]  ,     DESC,   -- 1º Critério de desempate
+			        [% Margem Contribuição]     ,     DESC,   -- 2º Critério de desempate
+			        dVendedores[Vendedor], ASC     -- 3º Critério de desempate
+			    )
+			)
+		formatString: 0
+		displayFolder: 02.Valores Totais
+		lineageTag: 97784c8d-49f8-4bf0-9d87-fb2fdfdaa79c
+
+	measure 'Rank Vendedor Top5' =
+			
+			CALCULATE(
+			    [Faturamento],
+			    KEEPFILTERS(
+			        TOPN(
+			            5,
+			            ALL(dVendedores),
+			            [Faturamento]
+			        )
+			    )
+			)
+		displayFolder: 02.Valores Totais
+		lineageTag: cfd7708a-746d-4dca-820b-e8d32376f701
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Produtos sem Vendas' = ```
+			
+			
+			VAR vProdutosVendidos = 
+			    VALUES(fVendas[Id Produto])
+			
+			VAR vTodosProdutos = 
+			    VALUES(dProdutos[Id Produto])
+			
+			VAR vResultado = 
+			    EXCEPT(
+			        vTodosProdutos,
+			        vProdutosVendidos
+			    )
+			
+			RETURN
+			
+			COUNTROWS(
+			    vResultado
+			)
+			
+			
+			```
+		formatString: 0
+		displayFolder: 02.Valores Totais
+		lineageTag: 8513f24d-9f3e-4a62-901c-01fc725fc4eb
+
+	measure 'Produtos recorrentes month' = ```
+			
+			
+			VAR vProdutosAtuais = 
+			    VALUES(fVendas[Id Produto])
+			
+			VAR vProdutosMesAnt = 
+			    CALCULATETABLE(
+			        VALUES(fVendas[Id Produto]),
+			        PREVIOUSMONTH(
+			            dCalendario[Data]
+			        )
+			    )
+			
+			VAR vResultado = 
+			    INTERSECT(
+			        vProdutosAtuais,
+			        vProdutosMesAnt
+			    )
+			
+			RETURN
+			
+			vResultado
+			```
+		formatString: 0
+		displayFolder: 02.Valores Totais
+		lineageTag: 64ebc1a8-b2fc-41b7-a06d-62c881c732de
+
+	measure 'Faturamento Enviado' =
+			
+			
+			CALCULATE(
+			    [Faturamento],
+			    USERELATIONSHIP(
+			        dCalendario[Data],
+			        fVendas[Data Envio]
+			    )
+			)
+		displayFolder: 02.Valores Totais
+		lineageTag: ad0abde9-9186-43fb-b2e7-fa63b358217a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Meta =
+			
+			
+			SUM(
+			    fMetas[Valor Meta]
+			)
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 02.Valores Totais
+		lineageTag: 9124c417-a060-415b-b63d-9ee469084db7
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Diferença Meta' =
+			
+			[Faturamento] - [Meta]
+		displayFolder: 02.Valores Totais
+		lineageTag: 5b55640d-6072-4250-8547-f1f451992ee2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Meta' =
+			
+			
+			DIVIDE(
+			    [Faturamento],
+			    [Meta]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 01.Percentagens\Meta
+		lineageTag: 8a31cc06-3843-4940-9d24-cc975cfcdbcd
+
+	measure 'Rank Cidade (Faturamento)' =
+			
+			
+			RANK(
+			    DENSE,
+			    ALLSELECTED(dClientes[Cidade]),
+			    ORDERBY(
+			        [Faturamento],     DESC,
+			        [Resultado]  ,     DESC,   -- 1º Critério de desempate
+			        [% Margem Contribuição]     ,     DESC,   -- 2º Critério de desempate
+			        dClientes[Cidade], ASC     -- 3º Critério de desempate
+			    )
+			)
+		formatString: 0
+		displayFolder: 02.Valores Totais
+		lineageTag: 99e0dfe9-d751-49cc-b260-f1697a4a893a
+
+	measure 'Qtde Vendas' =
+			
+			
+			DISTINCTCOUNT(
+			    fVendas[Num Venda]
+			)
+		formatString: 0
+		displayFolder: 02.Valores Totais
+		lineageTag: 4abca8e7-7af9-4471-9be2-ebd08049db83
+
+	measure 'Ticket Medio' =
+			
+			
+			DIVIDE(
+			    [Faturamento],
+			    [Qtde Vendas]
+			)
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 02.Valores Totais
+		lineageTag: c8750663-2cf3-4c5f-a4f9-659a7daa00e6
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Comissao LY' = ```
+			
+			VAR vUltimaDataVenda = 
+			CALCULATE(
+			    MAX(fVendas[Data Pedido]),
+			    ALLSELECTED(
+			        dCalendario
+			    )
+			)
+			
+			VAR vTabela = 
+			FILTER(
+			    VALUES(dCalendario[Data]),
+			    dCalendario[Data] <= vUltimaDataVenda
+			)
+			
+			RETURN
+			    
+			    
+			    CALCULATE(
+			        [Comissao],
+			        SAMEPERIODLASTYEAR(
+			            vTabela
+			        )
+			    )
+			```
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 03.Valores Temporais\Comissão
+		lineageTag: 07ff7f45-a619-4b69-9e7a-4a32544c541f
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Comissao LM' = ```
+			
+			
+			VAR vUltimaDataVenda = 
+			CALCULATE(
+			    MAX(fVendas[Data Pedido]),
+			    ALLSELECTED(
+			        dCalendario
+			    )
+			)
+			
+			VAR vTabela = 
+			FILTER(
+			    VALUES(dCalendario[Data]),
+			    dCalendario[Data] <= vUltimaDataVenda
+			)
+			
+			RETURN
+			CALCULATE(
+			    [Comissao],
+			    DATEADD(
+			        vTabela,
+			        -1,
+			        MONTH
+			    )
+			)
+			```
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 03.Valores Temporais\Comissão
+		lineageTag: 286270b1-8a43-4cbc-9ed9-99f84629c28b
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure '% Comissao YOY' = ```
+			
+			
+			VAR vValor_ano_abterior = [Comissao LY]
+			
+			RETURN 
+			    DIVIDE(
+			        [Comissao] - vValor_ano_abterior,
+			        vValor_ano_abterior
+			    )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 01.Percentagens\Comissão
+		lineageTag: 4d3ba9ac-f01e-4c85-8d2a-6fd5c06e7bf3
+
+	measure '% Comissao MOM' = ```
+			
+			
+			VAR vComissao_mes_anterior = 
+			    [Comissao LM] 
+			
+			RETURN 
+			    DIVIDE( 
+			        [Comissao] - vComissao_mes_anterior ,
+			        vComissao_mes_anterior
+			    )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 01.Percentagens\Comissão
+		lineageTag: 9512cf3b-0aae-492e-a18d-d9b6e19e05ed
+
+	measure 'Faturamento LY YTD' = ```
+			
+			VAR vUltimaDataVenda = 
+			CALCULATE(
+			    MAX(fVendas[Data Pedido]),
+			    ALLSELECTED(
+			        dCalendario
+			    )
+			)
+			
+			VAR vTabela =
+			FILTER(
+			    VALUES(dCalendario[Data]),
+			    dCalendario[Data] <= vUltimaDataVenda
+			)
+			
+			RETURN
+			
+			CALCULATE(
+			    [Faturamento],
+			    DATESYTD(
+			        SAMEPERIODLASTYEAR(
+			            vTabela
+			        )
+			    )
+			)
+			```
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 03.Valores Temporais\Faturamento
+		lineageTag: 2e4b6386-b549-41b5-8781-cc23b90da620
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure '% Faturamento MOM' = ```
+			
+			
+			VAR vFaturamento_LM = 
+			    [Faturamento LM (Acumualdo)]
+			
+			RETURN 
+			    DIVIDE( 
+			         [Faturamento] - vFaturamento_LM,
+			         vFaturamento_LM
+			    )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 01.Percentagens\Faturamento
+		lineageTag: c667dabd-681a-4604-9108-5e94fc6301a5
+
+	measure '% Margem LY' = ```
+			
+			
+			VAR vUltimaDataVenda = 
+			CALCULATE(
+			    MAX(fVendas[Data Pedido]),
+			    ALLSELECTED(
+			        dCalendario
+			    )
+			)
+			
+			VAR vTabela = 
+			FILTER(
+			    VALUES(dCalendario[Data]),
+			    dCalendario[Data] <= vUltimaDataVenda
+			)
+			
+			RETURN
+			    
+			    
+			    CALCULATE(
+			        [% Margem Contribuição],
+			        SAMEPERIODLASTYEAR(
+			            vTabela
+			        )
+			    )
+			```
+		displayFolder: 01.Percentagens\Margem
+		lineageTag: e75e3f07-d547-4150-bd31-2d1b0e696448
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Margem LM' = ```
+			
+			
+			VAR vUltimaDataVenda = 
+			CALCULATE(
+			    MAX(fVendas[Data Pedido]),
+			    ALLSELECTED(
+			        dCalendario
+			    )
+			)
+			
+			VAR vTabela = 
+			FILTER(
+			    VALUES(dCalendario[Data]),
+			    dCalendario[Data] <= vUltimaDataVenda
+			)
+			
+			RETURN
+			    
+			    
+			    CALCULATE(
+			        [Faturamento],
+			        DATEADD(
+			            vTabela,
+			            -1,
+			            MONTH
+			        )
+			    )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 01.Percentagens\Margem
+		lineageTag: ca398ae7-bc04-4bd8-93f6-00d5acc4f47a
+
+	measure '% Margem YOY' = ```
+			
+			   VAR vValor_ano_anterior = [% Margem LY]
+			
+			RETURN 
+			    DIVIDE(
+			        [% Margem Contribuição] - vValor_ano_anterior,
+			        vValor_ano_anterior
+			    )
+			```
+		displayFolder: 01.Percentagens\Margem
+		lineageTag: 2a013848-5483-4d72-b05c-b450f7d0f2e5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Margem MOM' = ```
+			
+			
+			VAR vMargem_mes_anterior = 
+			    [% Margem LM] 
+			
+			RETURN 
+			    DIVIDE( 
+			         [% Margem Contribuição] - vMargem_mes_anterior,
+			         vMargem_mes_anterior
+			    )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: 01.Percentagens\Margem
+		lineageTag: 02e94852-6e67-43dd-9428-627f9e1c7475
+
+	measure 'Resultado LM' = ```
+			
+			
+			VAR vUltimaDataVenda = 
+			CALCULATE(
+			    MAX(fVendas[Data Pedido]),
+			    ALLSELECTED(
+			        dCalendario
+			    )
+			)
+			
+			VAR vTabela = 
+			FILTER(
+			    VALUES(dCalendario[Data]),
+			    dCalendario[Data] <= vUltimaDataVenda
+			)
+			
+			RETURN
+			CALCULATE(
+			    [Resultado],
+			    DATEADD(
+			        vTabela,
+			        -1,
+			        MONTH
+			    )
+			)
+			```
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: 03.Valores Temporais\Resultado
+		lineageTag: bbbf5327-5ee5-4b63-815d-60eaebc3c087
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure '% Resultado MOM' = ```
+			
+			
+			VAR vResultado_mes_anterior = 
+			    [Resultado LM]
+			
+			RETURN 
+			    DIVIDE( 
+			         [Resultado] - vResultado_mes_anterior,
+			         vResultado_mes_anterior
+			    )
+			```
+		displayFolder: 01.Percentagens\Resultado
+		lineageTag: 3c0d95f6-8c5e-4730-ab09-4bcac7c487b8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Eixo Y EvolucaoFaturamento' = ```
+			
+			
+			VAR vTabela = 
+			ALLSELECTED(
+			    dCalendario[Mes Abreviado],
+			    dCalendario[Mês]
+			)
+			
+			VAR vMaiorValor = 
+			MAXX(
+			    vTabela,
+			    [Faturamento]
+			)
+			
+			RETURN
+			
+			vMaiorValor * 1.3
+			```
+		displayFolder: 00.Visuais\Comercial\Auxiliar
+		lineageTag: 9cc591f4-528a-4fec-8295-1947a1313caf
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Faturamento Formatado Texto' = ```
+			
+			
+			VAR vValor = [Faturamento]
+			
+			RETURN
+			
+			SWITCH(
+			    TRUE(),
+			    ABS(vValor) >= 1E9, -- 1000000000
+			    FORMAT(
+			        vValor,
+			        "0,,,.00 Bi" -- Cada virgula divide o valor por 1000
+			    ),
+			    ABS(vValor) >= 1E6, --  1000000
+			    FORMAT(
+			        vValor,
+			        "0,,.00 Mi" -- Cada virgula divide o valor por 1000
+			    ),
+			    ABS(vValor) >= 1E3, -- 1000
+			    FORMAT(
+			        vValor,
+			        "0,.00 K" -- Cada virgula divide o valor por 1000
+			    ),
+			    FORMAT(
+			        vValor,
+			        "0" 
+			    )
+			)
+			```
+		displayFolder: 00.Visuais\Comercial\Auxiliar
+		lineageTag: 419ec73e-c101-4039-9667-f795ebf826ec
+
+	measure '%Faturamento MOM Form Cond' =
+			
+			
+			VAR vValor = [% Faturamento MOM]
+			
+			RETURN
+			
+			SWITCH(
+			    TRUE(),
+			    vValor > 0 , "#14A962",
+			    vValor < 0, "#AD3F6B",
+			    "#586878"
+			)
+		displayFolder: 00.Visuais\Comercial\FormataçãoCondicional
+		lineageTag: 5d0b49f3-6b93-4896-8cd8-3a4ee7d1df55
+
+	measure 'Eixo Y FaturamentoGerente' = ```
+			
+			
+			VAR vTabela = 
+			ALLSELECTED(
+			    dVendedores[Gerente]
+			)
+			
+			VAR vMaiorValor = 
+			MAXX(
+			    vTabela,
+			    [Faturamento]
+			)
+			
+			RETURN
+			
+			vMaiorValor * 1.3
+			```
+		displayFolder: 00.Visuais\Comercial\Auxiliar
+		lineageTag: 06ec1014-5916-408e-9eac-3fbadae108cf
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Eixo Y FaturamentoCategoria' = ```
+			
+			
+			VAR vTabela = 
+			ALLSELECTED(
+			    dProdutos[Categoria]
+			)
+			
+			VAR vMaiorValor = 
+			MAXX(
+			    vTabela,
+			    [Faturamento]
+			)
+			
+			RETURN
+			
+			vMaiorValor * 1.3
+			```
+		displayFolder: 00.Visuais\Comercial\Auxiliar
+		lineageTag: ca411479-1923-420f-9e16-a839cff67b7c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '%Faturamento YoY Form Cond' =
+			
+			
+			VAR vValor = [% Faturamento YoY]
+			
+			RETURN
+			
+			SWITCH(
+			    TRUE(),
+			    vValor > 0 , "#14A962",
+			    vValor < 0, "#AD3F6B",
+			    "#586878"
+			)
+		displayFolder: 00.Visuais\Comercial\FormataçãoCondicional
+		lineageTag: 64ebd77c-8314-4fe8-baad-aea26556589d
+
+	measure 'Imagem Variacao Faturamento' =
+			
+			
+			fnImagemVariacao(
+			    [% Faturamento YoY]
+			)
+		displayFolder: 00.Visuais\Comercial\SVG
+		lineageTag: 0a0f5ff9-23ac-46d5-ba91-a1eb5c8c31c8
+		dataCategory: ImageUrl
+
+	measure 'Imagem Variacao Resultado' =
+			
+			
+			fnImagemVariacao(
+			    [% Resultado YoY]
+			)
+		displayFolder: 00.Visuais\Comercial\SVG
+		lineageTag: 49e02bbb-b288-4400-aa25-225b4b3967ab
+		dataCategory: ImageUrl
+
+	measure 'Imagem Variacao Margem Contribuição' =
+			
+			
+			fnImagemVariacao(
+			    [% Margem YOY]
+			)
+		displayFolder: 00.Visuais\Comercial\SVG
+		lineageTag: 008650ea-fd78-4a65-b296-f122a0e60053
+		dataCategory: ImageUrl
+
+	measure 'Imagem Tabela Rank Cidade' = ```
+			
+			
+			VAR vPosicao = 
+			[Rank Cidade (Faturamento)]
+			
+			VAR vCidade = 
+			SELECTEDVALUE(
+			    dClientes[Cidade]
+			)
+			
+			VAR vValor = 
+			[Faturamento Formatado Texto]
+			
+			VAR vVariacao = 
+			FORMAT(
+			    [% Faturamento YoY] + 0,
+			   "+0.0% 🡭;-0.0% 🡶; -​"
+			)
+			
+			VAR vCorVariacao = 
+			[%Faturamento YoY Form Cond]
+			
+			VAR vPrefixo = "data:image/svg+xml,"
+			
+			RETURN
+			
+			vPrefixo & 
+			
+			"
+			
+			<svg
+			    width='300'
+			    height='65'
+			    viewBox='0 0 300 65'
+			    fill='none'
+			    xmlns='http://www.w3.org/2000/svg'
+			>
+			    <g id='tabelaComercial'>
+			
+			        <text
+			            id='cidade'
+			            fill='white'
+			            font-family='Segoe UI'
+			            font-size='15'
+			            font-weight='bold'
+			            letter-spacing='0em'
+			        >
+			            <tspan x='10' y='18.2109'>
+			                " & vCidade & "
+			            </tspan>
+			        </text>
+			
+			        <text
+			            id='value'
+			            fill='white'
+			            font-family='Segoe UI'
+			            font-size='15'
+			            font-weight='bold'
+			            letter-spacing='0em'
+			        >
+			            <tspan x='10' y='43.2109'>
+			               R$ " & vValor & "
+			            </tspan>
+			        </text>
+			
+			        <text
+			            id='labelvaleu'
+			            fill='#C0C5D5'
+			            font-family='Segoe UI'
+			            font-size='12'
+			            font-weight='600'
+			            letter-spacing='0em'
+			        >
+			            <tspan x='10' y='55.9688'>
+			                Faturamento
+			            </tspan>
+			        </text>
+			
+			        <text
+			            id='valuevariacao'
+			            fill='" & vCorVariacao & "'
+			            font-family='Segoe UI'
+			            font-size='15'
+			            font-weight='bold'
+			            letter-spacing='0em'
+			        >
+			            <tspan x='136' y='43.2109'>
+			                " & vVariacao & "
+			            </tspan>
+			        </text>
+			
+			        <text
+			            id='labelvariacao'
+			            fill='#C0C5D5'
+			            font-family='Segoe UI'
+			            font-size='12'
+			            font-weight='600'
+			            letter-spacing='0em'
+			        >
+			            <tspan x='136' y='55.9688'>
+			                Vs. Ano Anterior
+			            </tspan>
+			        </text>
+			
+			        <g
+			            id='medalha'
+			            clip-path='url(#clip0_14_147)'
+			        >
+			            <path
+			                id='Vector'
+			                d='M278.555 9.31339L277.003 6.12335L274.025 0H264.043L268.572 9.30997L278.555 9.31339ZM279.888 8.43234L283.877 0H275.788L276.219 0.889914L279.888 8.43234ZM281.622 17.2474C279.838 15.4503 277.49 14.3319 274.978 14.0827C272.466 13.8337 269.947 14.4693 267.848 15.8813C265.75 17.2933 264.202 19.3943 263.47 21.8263C262.737 24.2584 262.865 26.871 263.83 29.219C264.796 31.567 266.541 33.5051 268.767 34.7031C270.993 35.901 273.562 36.2848 276.037 35.7888C278.513 35.2929 280.741 33.9481 282.342 31.9834C283.943 30.0187 284.818 27.5558 284.818 25.0144C284.821 23.5713 284.541 22.1418 283.992 20.8086C283.444 19.4754 282.638 18.265 281.622 17.2474ZM273.91 33.969C272.152 33.9689 270.433 33.4436 268.971 32.4597C267.509 31.4759 266.369 30.0775 265.696 28.4415C265.023 26.8055 264.847 25.0053 265.191 23.2686C265.534 21.5319 266.381 19.9366 267.624 18.6845C268.868 17.4324 270.452 16.5798 272.176 16.2343C273.901 15.8889 275.689 16.0663 277.313 16.744C278.938 17.4217 280.327 18.5693 281.304 20.0416C282.281 21.514 282.802 23.2449 282.802 25.0158C282.799 27.3895 281.862 29.6654 280.195 31.3439C278.528 33.0224 276.267 33.9665 273.91 33.969ZM273.91 17.654C272.464 17.6541 271.051 18.0859 269.85 18.8947C268.648 19.7036 267.711 20.8531 267.158 22.1982C266.605 23.5431 266.46 25.023 266.742 26.4507C267.024 27.8784 267.72 29.1898 268.743 30.2191C269.765 31.2484 271.067 31.9494 272.485 32.2333C273.903 32.5172 275.373 32.3715 276.708 31.8143C278.044 31.2572 279.185 30.3138 279.988 29.1034C280.791 27.8931 281.22 26.4701 281.22 25.0144C281.213 23.0645 280.44 21.1964 279.071 19.8177C277.702 18.4389 275.847 17.6612 273.91 17.654ZM275.26 11.7977V10.9207H272.561V11.7977H275.26Z'
+			                fill='" & vCorVariacao & "'
+			            />
+			        </g>
+			
+			        <text
+			            id='posicao'
+			            fill='white'
+			            font-family='Segoe UI'
+			            font-size='10'
+			            font-weight='bold'
+			            letter-spacing='0em'
+			        >
+			            <tspan x='270.914' y='28.6406'>
+			                " & vPosicao & "
+			            </tspan>
+			        </text>
+			
+			    </g>
+			
+			    <defs>
+			        <clipPath id='clip0_14_147'>
+			            <rect
+			                width='22'
+			                height='36'
+			                fill='white'
+			                transform='translate(263)'
+			            />
+			        </clipPath>
+			    </defs>
+			</svg>
+			
+			"
+			```
+		displayFolder: 00.Visuais\Comercial\SVG
+		lineageTag: cc0c6bc8-a0a3-42da-992b-2ba844ff0468
+		dataCategory: ImageUrl
+
+	measure '%Meta Form Cond' =
+			
+			
+			VAR vValor = [% Meta]
+			
+			RETURN
+			
+			SWITCH(
+			    TRUE(),
+			    vValor >= 1 , "#14A962",
+			    vValor < 0.81, "#AD3F6B",
+			    "#CB9B3E"
+			)
+		displayFolder: 00.Visuais\Comercial\FormataçãoCondicional
+		lineageTag: 6a2a12c0-6a25-4b00-819f-45c3d10d5a23
+
+	measure 'Faturamento Formatado' = ```
+			
+			
+			CALCULATE(
+			    SUMX(
+			        fVendas,
+			        fVendas[Valor Unit] * fVendas[Qtde]
+			    ),
+			    dStatus[Id Status] = 1
+			)
+			
+			```
+		displayFolder: 02.Valores Totais
+		lineageTag: 9e322c99-7eb8-4e48-b8fe-85798b78bced
+
+		formatStringDefinition =
+				VAR vValor = SELECTEDMEASURE()
+				
+				RETURN
+				SWITCH(
+				    TRUE(),
+				    ABS(vValor) >= 1E9, "0,,,.00 Bi",
+				    ABS(vValor) >= 1E6, "0,,.00 Mi",
+				    ABS(vValor) >= 1E3, "0,.00 K",
+				    "0"
+				)
+
+	measure 'Imagem Variacao Comissao' =
+			
+			
+			fnImagemVariacao(
+			    [% Comissao YoY]
+			)
+		displayFolder: 00.Visuais\Comercial\SVG
+		lineageTag: f32c6228-a790-4917-95cf-f53ac167ac13
+		dataCategory: ImageUrl
+
+	measure 'Imagem Velocimetro' = ```
+			
+			
+			VAR vMeta = [% Meta]
+			
+			VAR vVariacao = 
+			FORMAT(
+			    [% Meta] + 0,
+			   "0%; -​"
+			)
+			
+			VAR vMetaFomartCond = 
+			[%Meta Form Cond]
+			
+			VAR vMetaSeta = 
+			IF(
+			    vMeta * 175.61 > 251
+			    , 251
+			    , vMeta * 175.61
+			)
+			
+			VAR vPrefixo = "data:image/svg+xml,"
+			
+			RETURN
+			
+			vPrefixo & 
+			
+			"
+			
+			<svg
+			    width='250'
+			    height='200'
+			    viewBox='0 0 250 200'
+			    fill='none'
+			    xmlns='http://www.w3.org/2000/svg'
+			>
+			    <g
+			        id='cVelocimetro'
+			        clip-path='url(#clip0_30_2)'
+			    >
+			        <g id='Ponteiro' transform='rotate(" & vMetaSeta & ",125,117)'>
+			            <circle
+			                id='circGiro'
+			                cx='125'
+			                cy='117'
+			                r='100'
+			                fill='#E3EAF6'
+			                fill-opacity='0'
+			            />
+			
+			            <path
+			                id='SetaMarcador'
+			                d='M54.2332 168.628C53.4662 168.695 52.9141 167.906 53.2396 167.209L64.0277 144.084C64.3973 143.292 65.5338 143.322 65.8612 144.132L70.5901 155.842C70.647 155.983 70.7354 156.109 70.8483 156.211L80.2346 164.66C80.8843 165.245 80.5237 166.323 79.6529 166.399L54.2332 168.628Z'
+			                fill='" & vMetaFomartCond & "'
+			            />
+			        </g>
+			
+			        <g id='MarcadoresVelocimetro'>
+			            <path
+			                id='MarcadoresMaximo'
+			                d='M215.46 180.588L214.301 182.218L198 170.63L199.159 169L215.46 180.588ZM209.997 169.724L208.943 171.424L200.444 166.152L201.499 164.453L209.997 169.724ZM213.14 164.284L212.194 166.046L203.382 161.319L204.327 159.557L213.14 164.284ZM215.934 158.657L215.101 160.476L206.009 156.312L206.842 154.493L215.934 158.657ZM218.369 152.866L217.651 154.733L208.316 151.148L209.033 149.281L218.369 152.866ZM220.436 146.934L219.837 148.843L210.295 145.851L210.894 143.942L220.436 146.934ZM222.126 140.884L221.648 142.825L211.938 140.438L212.415 138.497L222.126 140.884ZM223.433 134.739L223.078 136.707L213.236 134.935L213.591 132.967L223.433 134.739ZM224.352 128.524L224.121 130.511L214.188 129.36L214.418 127.373L224.352 128.524ZM224.879 122.264L224.773 124.262L214.787 123.736L214.893 121.739L224.879 122.264ZM225.031 117.983L215.032 118.087L215.012 116.087L225.011 115.983L225.031 117.983ZM224.895 111.701L214.922 112.433L214.775 110.438L224.749 109.707L224.895 111.701ZM224.364 105.44L214.456 106.796L214.186 104.814L224.093 103.459L224.364 105.44ZM223.441 99.2256L213.638 101.2L213.243 99.2393L223.046 97.2646L223.441 99.2256ZM222.13 93.0801L212.47 95.667L211.953 93.7354L221.612 91.1484L222.13 93.0801ZM220.435 87.0293L210.957 90.2178L210.319 88.3223L219.798 85.1338L220.435 87.0293ZM218.364 81.0977L209.104 84.874L208.35 83.0225L217.608 79.2451L218.364 81.0977ZM215.925 75.3066L206.921 79.6572L206.051 77.8564L215.055 73.5059L215.925 75.3066ZM213.127 69.6807L204.414 74.5889L203.433 72.8457L212.146 67.9385L213.127 69.6807ZM209.98 64.2422L201.593 69.6865L200.504 68.0098L208.892 62.5645L209.98 64.2422ZM206.499 59.0107L198.47 64.9717L197.277 63.3662L205.307 57.4053L206.499 59.0107ZM210.584 47.543L195.307 60.4502L194.016 58.9229L209.294 46.0156L210.584 47.543Z'
+			                fill='#14A962'
+			                fill-opacity='0.623529'
+			            />
+			
+			            <path
+			                id='MarcadorComum'
+			                d='M52.2666 170.621L36.208 182.544L35.0156 180.938L51.0742 169.016L52.2666 170.621ZM49.5283 166.021L41.1406 171.467L40.0518 169.789L48.4395 164.345L49.5283 166.021ZM46.5996 161.186L37.8867 166.093L36.9053 164.351L45.6182 159.442L46.5996 161.186ZM43.9805 156.175L34.9775 160.525L34.1064 158.725L43.1104 154.374L43.9805 156.175ZM41.6826 151.009L32.4238 154.786L31.668 152.934L40.9268 149.157L41.6826 151.009ZM39.7129 145.709L30.2344 148.897L29.5967 147.002L39.0752 143.813L39.7129 145.709ZM38.0781 140.296L28.4189 142.883L27.9014 140.951L37.5615 138.364L38.0781 140.296ZM36.7891 134.792L26.9863 136.767L26.5908 134.806L36.3936 132.831L36.7891 134.792ZM35.8467 129.217L25.9395 130.572L25.668 128.591L35.5752 127.235L35.8467 129.217ZM35.2568 123.594L25.2832 124.324L25.1367 122.33L35.1104 121.599L35.2568 123.594ZM35.0205 117.944L25.0215 118.048L25 116.048L35 115.944L35.0205 117.944ZM35.2441 110.295L35.1396 112.292L25.1533 111.768L25.2578 109.77L35.2441 110.295ZM35.8438 104.671L35.6133 106.658L25.6807 105.507L25.9102 103.521L35.8438 104.671ZM36.7949 99.0967L36.4404 101.064L26.5996 99.292L26.9531 97.3242L36.7949 99.0967ZM38.0938 93.5928L37.6172 95.5342L27.9062 93.1475L28.3828 91.2061L38.0938 93.5928ZM39.7363 88.1807L39.1377 90.0889L29.5967 87.0977L30.1943 85.1885L39.7363 88.1807ZM41.7158 82.8828L40.998 84.75L31.6631 81.165L32.3799 79.2979L41.7158 82.8828ZM44.0225 77.7197L43.1895 79.5381L34.0986 75.374L34.9307 73.5557L44.0225 77.7197ZM46.6494 72.7119L45.7041 74.4746L36.8926 69.7471L37.8379 67.9854L46.6494 72.7119ZM49.5869 67.8789L48.5332 69.5781L40.0352 64.3076L41.0889 62.6074L49.5869 67.8789ZM52.8203 63.2393L51.6621 64.8691L43.5117 59.0752L44.6699 57.4453L52.8203 63.2393ZM56.3398 58.8125L55.0811 60.3662L47.3105 54.0723L48.5693 52.5176L56.3398 58.8125ZM198.587 49.2559L191.368 56.1758L189.984 54.7324L197.203 47.8125L198.587 49.2559ZM60.1299 54.6152L58.7764 56.0869L51.416 49.3174L52.7695 47.8447L60.1299 54.6152ZM194.187 44.7695L187.416 52.1299L185.944 50.7764L192.715 43.416L194.187 44.7695ZM64.1768 50.6641L62.7324 52.0479L55.8125 44.8291L57.2559 43.4453L64.1768 50.6641ZM189.514 40.5693L183.219 48.3398L181.665 47.0811L187.96 39.3105L189.514 40.5693ZM68.4629 46.9746L66.9346 48.2656L60.4814 40.626L62.0088 39.3359L68.4629 46.9746ZM184.586 36.6699L178.792 44.8203L177.162 43.6621L182.956 35.5117L184.586 36.6699ZM72.9717 43.5615L71.3662 44.7539L65.4053 36.7246L67.0107 35.5332L72.9717 43.5615ZM179.424 33.0879L174.153 41.5869L172.453 40.5322L177.725 32.0342L179.424 33.0879ZM77.6875 40.4385L76.0098 41.5283L70.5645 33.1406L72.2422 32.0518L77.6875 40.4385ZM174.047 29.8379L169.319 38.6504L167.558 37.7051L172.284 28.8926L174.047 29.8379ZM82.5889 37.6182L80.8467 38.5996L75.9385 29.8867L77.6807 28.9053L82.5889 37.6182ZM168.476 26.9307L164.312 36.0225L162.493 35.1904L166.658 26.0986L168.476 26.9307ZM87.6572 35.1113L85.8564 35.9814L81.5059 26.9775L83.3066 26.1074L87.6572 35.1113ZM162.733 24.3799L159.148 33.7148L157.281 32.998L160.867 23.6631L162.733 24.3799ZM92.874 32.9268L91.0225 33.6826L87.2461 24.4229L89.0977 23.668L92.874 32.9268ZM156.843 22.1943L153.852 31.7363L151.942 31.1377L154.935 21.5957L156.843 22.1943ZM98.2178 31.0742L96.3223 31.7119L93.1338 22.2344L95.0293 21.5967L98.2178 31.0742ZM150.826 20.3828L148.439 30.0938L146.497 29.6172L148.884 19.9053L150.826 20.3828ZM103.667 29.5615L101.735 30.0791L99.1484 20.4189L101.08 19.9014L103.667 29.5615ZM144.708 18.9531L142.936 28.7949L140.967 28.4404L142.739 18.5986L144.708 18.9531ZM109.2 28.3936L107.24 28.7881L105.265 18.9854L107.226 18.5908L109.2 28.3936ZM114.797 27.5752L112.815 27.8467L111.46 17.9385L113.441 17.668L114.797 27.5752ZM138.511 17.9102L137.36 27.8438L135.374 27.6133L136.524 17.6797L138.511 17.9102ZM120.433 27.1104L118.438 27.2559L117.707 17.2832L119.702 17.1367L120.433 27.1104ZM132.262 17.2588L131.736 27.2451L129.739 27.1396L130.265 17.1533L132.262 17.2588ZM126.087 27L124.087 27.0205L123.984 17.0205L125.983 17L126.087 27Z'
+			                fill='#E8EEFA'
+			            />
+			        </g>
+			
+			        <g id='Numeros'>
+			            <text
+			                id='MAX'
+			                fill='#14A962'
+			                font-family='Segoe UI'
+			                font-size='12'
+			                font-weight='bold'
+			                letter-spacing='0em'
+			            >
+			                <tspan x='219' y='184.969'>MAX</tspan>
+			            </text>
+			
+			            <text
+			                id='100'
+			                fill='#14A962'
+			                font-family='Segoe UI'
+			                font-size='12'
+			                font-weight='bold'
+			                letter-spacing='0em'
+			            >
+			                <tspan x='213' y='45.9688'>100</tspan>
+			            </text>
+			
+			            <text
+			                id='20'
+			                fill='#C0C5D5'
+			                fill-opacity='0.6'
+			                font-family='Segoe UI'
+			                font-size='12'
+			                font-weight='bold'
+			                letter-spacing='0em'
+			            >
+			                <tspan x='8' y='120.969'>20</tspan>
+			            </text>
+			
+			            <text
+			                id='60'
+			                fill='#C0C5D5'
+			                fill-opacity='0.6'
+			                font-family='Segoe UI'
+			                font-size='12'
+			                font-weight='bold'
+			                letter-spacing='0em'
+			            >
+			                <tspan x='84' y='18.9688'>60</tspan>
+			            </text>
+			
+			            <text
+			                id='40'
+			                fill='#C0C5D5'
+			                fill-opacity='0.6'
+			                font-family='Segoe UI'
+			                font-size='12'
+			                font-weight='bold'
+			                letter-spacing='0em'
+			            >
+			                <tspan x='25' y='63.9688'>40</tspan>
+			            </text>
+			
+			            <text
+			                id='80'
+			                fill='#C0C5D5'
+			                fill-opacity='0.6'
+			                font-family='Segoe UI'
+			                font-size='12'
+			                font-weight='bold'
+			                letter-spacing='0em'
+			            >
+			                <tspan x='150' y='16.9688'>80</tspan>
+			            </text>
+			
+			            <text
+			                id='0'
+			                fill='#C0C5D5'
+			                fill-opacity='1'
+			                font-family='Segoe UI'
+			                font-size='12'
+			                font-weight='bold'
+			                letter-spacing='0em'
+			            >
+			                <tspan x='25' y='184.969'>0</tspan>
+			            </text>
+			        </g>
+			
+			        <text
+			            id='ValueCentro'
+			            text-anchor='middle'
+			            fill='" & vMetaFomartCond & "'
+			            font-family='Segoe UI'
+			            font-size='45'
+			            font-weight='600'
+			            letter-spacing='0em'
+			        >
+			            <tspan x='125' y='138'>
+			                " & vVariacao & "
+			            </tspan>
+			        </text>
+			
+			        <text
+			            id='LabelCentro'
+			            text-anchor='middle'
+			            fill='white'
+			            font-family='Segoe UI'
+			            font-size='15'
+			            font-weight='600'
+			            letter-spacing='0em'
+			        >
+			            <tspan x='125' y='97'>Meta (%)</tspan>
+			        </text>
+			    </g>
+			
+			    <defs>
+			        <clipPath id='clip0_30_2'>
+			            <rect
+			                width='250'
+			                height='200'
+			                fill='white'
+			            />
+			        </clipPath>
+			    </defs>
+			</svg>
+			
+			"
+			```
+		displayFolder: 00.Visuais\Vendedores\SVG
+		lineageTag: 1e7bb996-4407-4469-9b86-1e98c05f89fd
+		dataCategory: ImageUrl
+
+	partition Medidas = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+

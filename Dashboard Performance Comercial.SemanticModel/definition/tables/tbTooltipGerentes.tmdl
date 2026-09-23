@@ -1,0 +1,220 @@
+table tbTooltipGerentes
+	lineageTag: 2203a357-e238-4ba4-982e-0220e16505d5
+
+	measure '1.ValorContexto' = ```
+			
+			
+			/* Retorna o contexto atual conforme a coluna do eixo X
+			    1 = Anterior | 2= Atual | 3= Vazio
+			*/
+			
+			VAR vContexto = 
+			SELECTEDVALUE(tbTooltipGerentes[ID])
+			
+			RETURN
+			
+			SWITCH(
+			    TRUE(),
+			    vContexto = 1, [Faturamento LY],
+			    vContexto = 2, [Faturamento]
+			)
+			```
+		displayFolder: 00.Medidas
+		lineageTag: 7143b6c5-93be-4e13-b00b-8363aa3aec85
+
+		formatStringDefinition =
+				VAR vValor = SELECTEDMEASURE()
+				
+				RETURN
+				
+				"""" &
+				
+				SWITCH(
+				    TRUE(),
+				    ABS(vValor) >= 1E9, FORMAT(vValor, "0,,,.00 Bi"),
+				    ABS(vValor) >= 1E6, FORMAT(vValor,"0,,.00 Mi"),
+				    ABS(vValor) >= 1E3, FORMAT(vValor,"0,.00 K"),
+				    "0"
+				)
+				
+				& """"
+
+	measure '2.LinhaAnterior' =
+			
+			
+			-- Medida responsável por retornar o valor do Ano Anterior em todos os contextos (1 a 3)
+			
+			[Faturamento LY]
+		displayFolder: 00.Medidas
+		lineageTag: 09856529-fe74-4911-bc53-cf66f0e63b4a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '3.LinhaAtual' = ```
+			
+			
+			VAR vContexto = 
+			SELECTEDVALUE(tbTooltipGerentes[ID])
+			
+			VAR vSegmentadorAno = 
+			MAX(dCalendario[Ano])
+			
+			VAR vPrimeiroAno = 
+			MINX(
+			    ALL(dCalendario[Ano]), 
+			    dCalendario[Ano]
+			)
+			
+			RETURN
+			
+			IF(
+			    vContexto >=2
+			    && vSegmentadorAno <> vPrimeiroAno,
+			    [Faturamento]
+			)
+			```
+		displayFolder: 00.Medidas
+		lineageTag: 262b3f25-99aa-4eaf-aad3-c3fa0b220dfd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '4.SetaCima' = ```
+			
+			
+			VAR vContexto = 
+			SELECTEDVALUE(tbTooltipGerentes[ID])
+			
+			VAR vAtual = [Faturamento]
+			
+			VAR vAnterior = [Faturamento LY]
+			
+			VAR vSegmentadorAno = 
+			MAX(dCalendario[Ano])
+			
+			VAR vPrimeiroAno = 
+			MINX(
+			    ALL(dCalendario[Ano]), 
+			    dCalendario[Ano]
+			)
+			
+			RETURN
+			
+			IF( 
+			    vContexto = 3 
+			    && vAtual > vAnterior 
+			    && vSegmentadorAno <> vPrimeiroAno,
+			    vAtual
+			)
+			```
+		displayFolder: 00.Medidas
+		lineageTag: a450a857-4da3-4f5e-9415-47496d034a38
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '5.SetaBaixo (lim inf)' = ```
+			
+			
+			VAR vContexto = 
+			SELECTEDVALUE(tbTooltipGerentes[ID])
+			
+			VAR vAtual = [Faturamento]
+			
+			VAR vAnterior = [Faturamento LY]
+			
+			RETURN
+			
+			IF( 
+			    vContexto = 3 && vAtual <= vAnterior,
+			    vAtual
+			)
+			```
+		displayFolder: 00.Medidas
+		lineageTag: ef06c143-6f1f-4f57-99f6-f26bfff16e26
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '6.SetaBaixo (lim sup)' =
+			
+			
+			
+			[Faturamento LY]
+		displayFolder: 00.Medidas
+		lineageTag: c87e773e-158f-42a2-961f-fd53bc08b7e6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '7.Eixo Y EvolucaoFaturamento' = ```
+			
+			
+			VAR vTabela = 
+			ALLSELECTED(
+			    dVendedores[Vendedor]
+			)
+			
+			VAR vMaiorValorAtual = 
+			MAXX(
+			    vTabela,
+			    [Faturamento]
+			)
+			
+			VAR vMaiorValorAnterior = 
+			MAXX(
+			    vTabela,
+			    [Faturamento LY]
+			)
+			
+			VAR vMaiorValor = 
+			MAX(vMaiorValorAnterior, vMaiorValorAtual)
+			
+			RETURN
+			
+			vMaiorValor * 1.3
+			```
+		displayFolder: 00.Medidas
+		lineageTag: 9b665215-abc3-42b3-8094-ffb9f8f696db
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '8.1 RotuloEixoXAtual' =
+			
+			
+			MAX( dCalendario[Ano])
+		formatString: 0
+		displayFolder: 00.Medidas
+		lineageTag: 4f601cb0-50be-4df5-8cf2-aa4b867e5f27
+
+	column Medidas
+		lineageTag: 12c05857-c5f2-47c3-b080-1ec75c13f164
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Medidas]
+		sortByColumn: ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ID
+		formatString: 0
+		lineageTag: 849034f3-aceb-4ff1-af67-39d79c6b46ee
+		summarizeBy: count
+		isNameInferred
+		sourceColumn: [ID]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition tbTooltipGerentes = calculated
+		mode: import
+		source =
+				
+				
+				DATATABLE(
+				    "Medidas", STRING,
+				    "ID", INTEGER,
+				    {
+				        {"Anterior", 1},
+				        {"Atual", 2},
+				        {"", 3}
+				    }
+				)
+
+	annotation PBI_Id = 76106fadefe2424cbaed9f8508ded390
+

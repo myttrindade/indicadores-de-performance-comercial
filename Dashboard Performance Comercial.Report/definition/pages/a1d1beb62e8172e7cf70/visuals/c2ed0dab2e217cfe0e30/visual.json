@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "c2ed0dab2e217cfe0e30",
+  "position": {
+    "x": 333.4496431403648,
+    "y": 21.316415543219669,
+    "z": 3000,
+    "height": 66.994448850118957,
+    "width": 511.593973037272,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Performance por Vendedor",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "28pt",
+                      "color": "#071e2f"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

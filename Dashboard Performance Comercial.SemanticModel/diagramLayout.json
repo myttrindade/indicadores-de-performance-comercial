@@ -1,0 +1,164 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 557.11160868084608,
+        "y": 4.0224664378192356
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 252.43577383411042,
+            "y": 144.24313026928408
+          },
+          "nodeIndex": "dClientes",
+          "nodeLineageTag": "c10ed67b-7ce7-497e-9342-51c22d205018",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 515.57199075628137
+          },
+          "nodeIndex": "dPagamentos",
+          "nodeLineageTag": "c1aab7f6-d334-4cc9-bf92-d0854934fc37",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1002.7185272822753,
+            "y": 148.36023508651641
+          },
+          "nodeIndex": "dProdutos",
+          "nodeLineageTag": "33edcbed-17d2-40ce-923a-6680327262af",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 756.28315875758,
+            "y": 149.31050477444751
+          },
+          "nodeIndex": "dStatus",
+          "nodeLineageTag": "d09dff2e-2a04-4895-b06a-cb7a8e8111e7",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 503.94940994000865,
+            "y": 148.0025895455189
+          },
+          "nodeIndex": "dUnidades",
+          "nodeLineageTag": "dcc86c6b-a2e6-4ba5-99af-6f3f5c04f82d",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 144.54692140017767
+          },
+          "nodeIndex": "dVendedores",
+          "nodeLineageTag": "3dc363e3-2067-48e6-be94-9910ab93bfb0",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 470.31283894720326,
+            "y": 629.29819954462562
+          },
+          "nodeIndex": "fVendas",
+          "nodeLineageTag": "fdacb6f8-a1d4-4ae9-b398-223b73921cad",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 759.24478669478276,
+            "y": 641.84427249589987
+          },
+          "nodeIndex": "fMetas",
+          "nodeLineageTag": "113ca8d3-00ca-4e2d-b528-292e880900f2",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1240.8778730830088,
+            "y": 494.93706939682829
+          },
+          "nodeIndex": "dCalendario",
+          "nodeLineageTag": "2a14bad2-5ac2-4a6d-9a5f-43d45a68f318",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1524.8778730830088,
+            "y": 336.66260700949528
+          },
+          "nodeIndex": "Medidas",
+          "nodeLineageTag": "1917cdcd-9c3c-4739-82af-1c6982fcaa47",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1808.8778730830088,
+            "y": 340.60857806076547
+          },
+          "nodeIndex": "tbTooltipGerentes",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 79.553182037699813,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "7195f0c47af7714cb556",
+  "position": {
+    "x": 336.78417884780742,
+    "y": 141.97764402407566,
+    "z": 6000,
+    "height": 214.61736887360274,
+    "width": 198.10834049871025,
+    "tabOrder": 6000
+  },
+  "visual": {
+    "visualType": "image",
+    "objects": {
+      "image": [
+        {
+          "properties": {
+            "sourceType": {
+              "expr": {
+                "Literal": {
+                  "Value": "'imageData'"
+                }
+              }
+            },
+            "sourceField": {
+              "expr": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "dVendedores"
+                        }
+                      },
+                      "Property": "URL Foto"
+                    }
+                  },
+                  "Function": 3
+                }
+              }
+            },
+            "fit": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Stretch'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

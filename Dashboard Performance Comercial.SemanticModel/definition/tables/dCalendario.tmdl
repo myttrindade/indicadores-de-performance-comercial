@@ -1,0 +1,179 @@
+table dCalendario
+	lineageTag: 2a14bad2-5ac2-4a6d-9a5f-43d45a68f318
+	dataCategory: Time
+
+	column Data
+		dataType: dateTime
+		isKey
+		formatString: Short Date
+		lineageTag: 9678e39c-9f0b-45ae-81dd-9940a1aa8710
+		summarizeBy: none
+		sourceColumn: Data
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Ano
+		dataType: int64
+		formatString: 0
+		lineageTag: 2ed562a3-f17c-469a-a493-048d6bff6b0c
+		summarizeBy: sum
+		sourceColumn: Ano
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Nome do Mês'
+		dataType: string
+		lineageTag: f77710f7-ac48-4fd1-83b3-511c366a84aa
+		summarizeBy: none
+		sourceColumn: Nome do Mês
+		sortByColumn: Mês
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mês
+		dataType: int64
+		formatString: 0
+		lineageTag: 61178bfb-aa8a-4bce-ae37-2e86aa0c5853
+		summarizeBy: sum
+		sourceColumn: Mês
+
+		annotation SummarizationSetBy = Automatic
+
+	column Dia
+		dataType: int64
+		formatString: 0
+		lineageTag: 73cd12f1-b687-4382-8d77-7067124c89a5
+		summarizeBy: sum
+		sourceColumn: Dia
+
+		annotation SummarizationSetBy = Automatic
+
+	column Semestre
+		dataType: string
+		lineageTag: 6b92d2dd-21ae-491e-98cd-8661a70c7126
+		summarizeBy: none
+		sourceColumn: Semestre
+
+		annotation SummarizationSetBy = Automatic
+
+	column Trimestre
+		dataType: string
+		lineageTag: 067c3897-3746-48a8-8691-a1f4d97ff7ea
+		summarizeBy: none
+		sourceColumn: Trimestre
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Mes Abreviado'
+		dataType: string
+		lineageTag: 8b2ff1c5-7e82-4fb6-9c17-8125b785aa89
+		summarizeBy: none
+		sourceColumn: Mes Abreviado
+		sortByColumn: Mês
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mes-Ano
+		dataType: string
+		lineageTag: 0abbfcd5-40d6-44ab-8a7b-3d140e306dc4
+		summarizeBy: none
+		sourceColumn: Mes-Ano
+		sortByColumn: 'Mes-Ano Classificacao'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Mes-Ano Classificacao'
+		dataType: int64
+		formatString: 0
+		lineageTag: 771dac58-3c34-4bdf-ab94-d260f08b86f6
+		summarizeBy: sum
+		sourceColumn: Mes-Ano Classificacao
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Datas com Vendas' =
+			
+			MAX(fVendas[Data Pedido]) >= dCalendario[Data]
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 00f00039-86ae-4e3a-aec8-d630334aace3
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Dia da Semana'
+		dataType: string
+		lineageTag: dbbe1542-7c6a-4b2e-8d68-0fcc8f5edeb4
+		summarizeBy: none
+		sourceColumn: Dia da Semana
+		sortByColumn: 'Day of Week'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day of Week'
+		dataType: int64
+		formatString: 0
+		lineageTag: 66956eee-68de-4af5-b031-f4a42281db42
+		summarizeBy: sum
+		sourceColumn: Day of Week
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy 'Data Hierarquia'
+		lineageTag: a8cf67a3-0c6f-46d5-b8b3-599eb0c117ea
+
+		level Ano
+			lineageTag: 2c6b6ba0-e619-46ef-a0e4-7cfb509b196e
+			column: Ano
+
+		level 'Mes Abreviado'
+			lineageTag: cad238da-1218-4585-81a5-419772b5b4b3
+			column: 'Mes Abreviado'
+
+		level Dia
+			lineageTag: 026ecdad-2784-46e2-9a6c-52552c751370
+			column: Dia
+
+	partition dCalendario = m
+		mode: import
+		queryGroup: Dimensao
+		source =
+				let
+				    DataMinima = List.Min(fVendas[Data Pedido] & fMetas[Data]),
+				    AnoMinimo = Date.Year(DataMinima),
+				    DataMaxima = List.Max(fVendas[Data Envio]),
+				    AnoMaximo = Date.Year(DataMaxima),
+				    Duracao = Duration.Days(#date(AnoMaximo,12,31) - #date(AnoMinimo,1,1)) + 1,
+				    Fonte = List.Dates(#date(AnoMinimo, 1, 1), Duracao, #duration(1, 0, 0, 0)),
+				    #"Convertido para Tabela" = Table.FromList(Fonte, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+				    #"Colunas Renomeadas" = Table.RenameColumns(#"Convertido para Tabela",{{"Column1", "Data"}}),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Colunas Renomeadas",{{"Data", type date}}),
+				    #"Ano Inserido" = Table.AddColumn(#"Tipo Alterado", "Ano", each Date.Year([Data]), Int64.Type),
+				    #"Nome do Mês Inserido" = Table.AddColumn(#"Ano Inserido", "Nome do Mês", each Date.MonthName([Data]), type text),
+				    #"Colocar Cada Palavra Em Maiúscula" = Table.TransformColumns(#"Nome do Mês Inserido",{{"Nome do Mês", Text.Proper, type text}}),
+				    #"Mês Inserido" = Table.AddColumn(#"Colocar Cada Palavra Em Maiúscula", "Mês", each Date.Month([Data]), Int64.Type),
+				    #"Dia Inserido" = Table.AddColumn(#"Mês Inserido", "Dia", each Date.Day([Data]), Int64.Type),
+				    #"Coluna Semestre" = Table.AddColumn(#"Dia Inserido", "Semestre", each if [Mês] <= 6 then "Sem1" else "Sem2"),
+				    #"Coluna Trimestre" = Table.AddColumn(#"Coluna Semestre", "Trimestre", each if [Mês] <= 3 then "Tri1" else if [Mês] <= 6 then "Tri2" else if [Mês] <= 9 then "Tri3" else "Tri4"),
+				    #"Coluna Mês Abreviado" = Table.AddColumn(#"Coluna Trimestre", "Mes Abreviado", each Text.Start([Nome do Mês], 3), type text),
+				    #"Coluna Mesclada Inserida" = Table.AddColumn(#"Coluna Mês Abreviado", "Mes-Ano", each Text.Combine({[Mes Abreviado], "-", Text.From([Ano], "pt-BR")}), type text),
+				    #"Personalização Adicionada" = Table.AddColumn(#"Coluna Mesclada Inserida", "Mes-Ano Classificacao", each [Ano] * 100 + [Mês]),
+				    #"Tipo Alterado2" = Table.TransformColumnTypes(#"Personalização Adicionada",{{"Mes-Ano Classificacao", Int64.Type}, {"Trimestre", type text}, {"Semestre", type text}}),
+				    #"Inserted Day Name" = Table.AddColumn(#"Tipo Alterado2", "Dia da Semana", each Text.Proper(Text.Start(Date.DayOfWeekName([Data]), 3)), type text),
+				    #"Inserted Day of Week" = Table.AddColumn(#"Inserted Day Name", "Day of Week", each Date.DayOfWeek([Data]), Int64.Type)
+				in
+				    #"Inserted Day of Week"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

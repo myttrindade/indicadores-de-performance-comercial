@@ -1,0 +1,35 @@
+table dStatus
+	lineageTag: d09dff2e-2a04-4895-b06a-cb7a8e8111e7
+
+	column 'Id Status'
+		dataType: int64
+		formatString: 0
+		lineageTag: adb54277-eb07-443d-b285-3460c809ac36
+		summarizeBy: none
+		sourceColumn: Id Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: c5b8ee98-7bb1-4950-9d30-554d38ff9376
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dStatus = m
+		mode: import
+		queryGroup: Dimensao
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents(dCaminho), null, true),
+				    Status_Table = Source{[Item="Status",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Status_Table,{{"Id Status", Int64.Type}, {"Status", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

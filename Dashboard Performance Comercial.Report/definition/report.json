@@ -1,0 +1,236 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/3.3.0/schema.json",
+  "themeCollection": {
+    "baseTheme": {
+      "name": "Fluent2-CY26SU07",
+      "reportVersionAtImport": {
+        "visual": "2.11.0",
+        "report": "3.4.0",
+        "page": "2.3.1"
+      },
+      "type": "SharedResources"
+    },
+    "customTheme": {
+      "name": "Estudos_-_Performance_Comercia5454383890505765.json",
+      "reportVersionAtImport": {
+        "visual": "2.11.0",
+        "report": "3.4.0",
+        "page": "2.3.1"
+      },
+      "type": "RegisteredResources"
+    }
+  },
+  "objects": {
+    "section": [
+      {
+        "properties": {
+          "verticalAlignment": {
+            "expr": {
+              "Literal": {
+                "Value": "'Top'"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "outspacePane": [
+      {
+        "properties": {
+          "expanded": {
+            "expr": {
+              "Literal": {
+                "Value": "false"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "publicCustomVisuals": [
+    "ScrollingTextVisual1448795304508",
+    "pureVizInfographicC9801BF222134D2D83FA9C41861F3482"
+  ],
+  "resourcePackages": [
+    {
+      "name": "SharedResources",
+      "type": "SharedResources",
+      "items": [
+        {
+          "name": "Fluent2-CY26SU07",
+          "path": "BaseThemes/Fluent2-CY26SU07.json",
+          "type": "BaseTheme"
+        }
+      ]
+    },
+    {
+      "name": "RegisteredResources",
+      "type": "RegisteredResources",
+      "items": [
+        {
+          "name": "1._icone_home611836666327006.svg",
+          "path": "1._icone_home611836666327006.svg",
+          "type": "Image"
+        },
+        {
+          "name": "2._limpa_filtro6618082573085542.svg",
+          "path": "2._limpa_filtro6618082573085542.svg",
+          "type": "Image"
+        },
+        {
+          "name": "3._icone_geral28771100456292364.svg",
+          "path": "3._icone_geral28771100456292364.svg",
+          "type": "Image"
+        },
+        {
+          "name": "3._icone_geral9827050904561436.svg",
+          "path": "3._icone_geral9827050904561436.svg",
+          "type": "Image"
+        },
+        {
+          "name": "4._icone_analitico495229483610221.svg",
+          "path": "4._icone_analitico495229483610221.svg",
+          "type": "Image"
+        },
+        {
+          "name": "4._icone_analitico6487654619990808.svg",
+          "path": "4._icone_analitico6487654619990808.svg",
+          "type": "Image"
+        },
+        {
+          "name": "5._icone_mapa_calor3783170653810618.svg",
+          "path": "5._icone_mapa_calor3783170653810618.svg",
+          "type": "Image"
+        },
+        {
+          "name": "6._icone_vendedores22039823714753604.svg",
+          "path": "6._icone_vendedores22039823714753604.svg",
+          "type": "Image"
+        },
+        {
+          "name": "8_farol20614670594922369.png",
+          "path": "8_farol20614670594922369.png",
+          "type": "Image"
+        },
+        {
+          "name": "bCapa22445360763743727.png",
+          "path": "bCapa22445360763743727.png",
+          "type": "Image"
+        },
+        {
+          "name": "bMapaCalor635330841471037.png",
+          "path": "bMapaCalor635330841471037.png",
+          "type": "Image"
+        },
+        {
+          "name": "bPerformanceAnalitica9963105354053701.png",
+          "path": "bPerformanceAnalitica9963105354053701.png",
+          "type": "Image"
+        },
+        {
+          "name": "bPerformanceComercial07315773058152109.png",
+          "path": "bPerformanceComercial07315773058152109.png",
+          "type": "Image"
+        },
+        {
+          "name": "bVendedores061512939825069446.png",
+          "path": "bVendedores061512939825069446.png",
+          "type": "Image"
+        },
+        {
+          "name": "cComissao5956972135520052.png",
+          "path": "cComissao5956972135520052.png",
+          "type": "Image"
+        },
+        {
+          "name": "cFaturamento6220548533510457.png",
+          "path": "cFaturamento6220548533510457.png",
+          "type": "Image"
+        },
+        {
+          "name": "ChatGPT_Image_8_de_set._de_20209835837637794709.png",
+          "path": "ChatGPT_Image_8_de_set._de_20209835837637794709.png",
+          "type": "Image"
+        },
+        {
+          "name": "cMargem9048910441560042.png",
+          "path": "cMargem9048910441560042.png",
+          "type": "Image"
+        },
+        {
+          "name": "cResultado2219456522929557.png",
+          "path": "cResultado2219456522929557.png",
+          "type": "Image"
+        },
+        {
+          "name": "Estudos_-_Performance_Comercia5454383890505765.json",
+          "path": "Estudos_-_Performance_Comercia5454383890505765.json",
+          "type": "CustomTheme"
+        },
+        {
+          "name": "medalha_OFF15863947035129533.svg",
+          "path": "medalha_OFF15863947035129533.svg",
+          "type": "Image"
+        },
+        {
+          "name": "medalha_ON6118573237561256.svg",
+          "path": "medalha_ON6118573237561256.svg",
+          "type": "Image"
+        },
+        {
+          "name": "QuadroRankEstadoHover14546902687042407.png",
+          "path": "QuadroRankEstadoHover14546902687042407.png",
+          "type": "Image"
+        },
+        {
+          "name": "QuadroRankEstadoHover1828855236541327.png",
+          "path": "QuadroRankEstadoHover1828855236541327.png",
+          "type": "Image"
+        },
+        {
+          "name": "QuadroRankEstadoHover6198925640728278.png",
+          "path": "QuadroRankEstadoHover6198925640728278.png",
+          "type": "Image"
+        },
+        {
+          "name": "QuadroRankEstadoPadrao8519532809256222.png",
+          "path": "QuadroRankEstadoPadrao8519532809256222.png",
+          "type": "Image"
+        },
+        {
+          "name": "tabela_OFF4812507241182178.svg",
+          "path": "tabela_OFF4812507241182178.svg",
+          "type": "Image"
+        },
+        {
+          "name": "tabela_ON6489198891385779.svg",
+          "path": "tabela_ON6489198891385779.svg",
+          "type": "Image"
+        },
+        {
+          "name": "tGerente5417077774371861.png",
+          "path": "tGerente5417077774371861.png",
+          "type": "Image"
+        },
+        {
+          "name": "tVendedor2437293153881812.png",
+          "path": "tVendedor2437293153881812.png",
+          "type": "Image"
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "useStylableVisualContainerHeader": true,
+    "exportDataMode": "AllowSummarized",
+    "defaultFilterActionIsDataFilter": true,
+    "defaultDrillFilterOtherVisuals": true,
+    "allowChangeFilterTypes": true,
+    "useEnhancedTooltips": true,
+    "useDefaultAggregateDisplayName": true,
+    "queryLimitOption": "None",
+    "customMemoryLimit": "1048576",
+    "customTimeoutLimit": "225"
+  }
+}

@@ -1,0 +1,48 @@
+table fMetas
+	lineageTag: 113ca8d3-00ca-4e2d-b528-292e880900f2
+
+	column Data
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 5e0a956c-92d2-4fd6-87a4-1f437b882699
+		summarizeBy: none
+		sourceColumn: Data
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Id Vendedor'
+		dataType: int64
+		formatString: 0
+		lineageTag: e6933433-75af-41b3-a0af-14683f768cb1
+		summarizeBy: none
+		sourceColumn: Id Vendedor
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Valor Meta'
+		dataType: double
+		lineageTag: 26f9eefe-8321-45e8-9e79-7b8ba29d9da3
+		summarizeBy: sum
+		sourceColumn: Valor Meta
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fMetas = m
+		mode: import
+		queryGroup: Fato
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents(fCaminhoMetas), null, true),
+				    Metas_Table = Source{[Item="Metas",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Metas_Table,{{"Data", type date}, {"Id Vendedor", Int64.Type}, {"Valor Meta", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

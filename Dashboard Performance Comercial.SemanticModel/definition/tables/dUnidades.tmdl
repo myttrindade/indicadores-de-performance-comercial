@@ -1,0 +1,35 @@
+table dUnidades
+	lineageTag: dcc86c6b-a2e6-4ba5-99af-6f3f5c04f82d
+
+	column 'Id Unidade'
+		dataType: int64
+		formatString: 0
+		lineageTag: faec931b-8b5d-4c85-a5e6-48953a253f67
+		summarizeBy: none
+		sourceColumn: Id Unidade
+
+		annotation SummarizationSetBy = Automatic
+
+	column Unidade
+		dataType: string
+		lineageTag: e85f6b9a-be50-488a-a3ae-f367b33e6868
+		summarizeBy: none
+		sourceColumn: Unidade
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dUnidades = m
+		mode: import
+		queryGroup: Dimensao
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents(dCaminho), null, true),
+				    Unidades_Table = Source{[Item="Unidades",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Unidades_Table,{{"Id Unidade", Int64.Type}, {"Unidade", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,51 @@
+table dVendedores
+	lineageTag: 3dc363e3-2067-48e6-be94-9910ab93bfb0
+
+	column 'Id Vendedor'
+		dataType: int64
+		formatString: 0
+		lineageTag: efdbf761-a444-4305-b6f9-23fc5816ad10
+		summarizeBy: none
+		sourceColumn: Id Vendedor
+
+		annotation SummarizationSetBy = Automatic
+
+	column Vendedor
+		dataType: string
+		lineageTag: 18d67637-e36d-4b1f-b5e8-15270af628f7
+		summarizeBy: none
+		sourceColumn: Vendedor
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'URL Foto'
+		dataType: string
+		lineageTag: fc94abbc-e7aa-4848-9606-ca54c8b3a0a9
+		summarizeBy: none
+		sourceColumn: URL Foto
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gerente
+		dataType: string
+		lineageTag: f713e16c-44e7-4550-808a-2520c5db5722
+		summarizeBy: none
+		sourceColumn: Gerente
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dVendedores = m
+		mode: import
+		queryGroup: Dimensao
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents(dCaminho), null, true),
+				    Vendedores_Table = Source{[Item="Vendedores",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Vendedores_Table,{{"Id Vendedor", Int64.Type}, {"Vendedor", type text}, {"URL Foto", type text}, {"Gerente", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

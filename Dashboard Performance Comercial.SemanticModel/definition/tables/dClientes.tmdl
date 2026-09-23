@@ -1,0 +1,62 @@
+table dClientes
+	lineageTag: c10ed67b-7ce7-497e-9342-51c22d205018
+
+	column 'Id Cliente'
+		dataType: int64
+		formatString: 0
+		lineageTag: 80c98ce2-8675-4951-ba00-868b7407e762
+		summarizeBy: none
+		sourceColumn: Id Cliente
+
+		annotation SummarizationSetBy = Automatic
+
+	column Cliente
+		dataType: string
+		lineageTag: 724f5088-d5ea-4139-9741-8519f5733d89
+		summarizeBy: none
+		sourceColumn: Cliente
+
+		annotation SummarizationSetBy = Automatic
+
+	column Cidade
+		dataType: string
+		lineageTag: 8e99a48b-f879-4114-ac25-82880028847b
+		summarizeBy: none
+		sourceColumn: Cidade
+
+		annotation SummarizationSetBy = Automatic
+
+	column UF
+		dataType: string
+		lineageTag: 0288ea3b-912e-4458-93df-10bf5a68d7be
+		summarizeBy: none
+		sourceColumn: UF
+
+		annotation SummarizationSetBy = Automatic
+
+	column Estado
+		dataType: string
+		lineageTag: 8ef3f3f6-f516-40c5-aeaa-90abb9316cad
+		summarizeBy: none
+		sourceColumn: Estado
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dClientes = m
+		mode: import
+		queryGroup: Dimensao
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents(dCaminho), null, true),
+				    Clientes_Table = Source{[Item="Clientes",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Clientes_Table,{{"Id Cliente", Int64.Type}, {"Cliente", type text}, {"id Cidade", Int64.Type}}),
+				    #"Merged Queries" = Table.NestedJoin(#"Changed Type", {"id Cidade"}, dCidades, {"Id Cidade"}, "dCidades", JoinKind.LeftOuter),
+				    #"Expanded dCidades" = Table.ExpandTableColumn(#"Merged Queries", "dCidades", {"Cidade", "UF", "Estado"}, {"Cidade", "UF", "Estado"}),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Expanded dCidades",{"Id Cliente", "Cliente", "Cidade", "UF", "Estado"})
+				in
+				    #"Removed Other Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

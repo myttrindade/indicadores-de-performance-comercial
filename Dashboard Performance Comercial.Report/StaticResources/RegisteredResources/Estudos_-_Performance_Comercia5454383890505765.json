@@ -1,0 +1,142 @@
+{
+  "name": "Estudos - Performance Comercial",
+  "textClasses": {
+    "label": {
+      "fontSize": 11,
+      "color": "#071E2F"
+    },
+    "title": {
+      "fontFace": "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif",
+      "fontSize": 14,
+      "color": "#071E2F"
+    },
+    "callout": {
+      "color": "#071E2F"
+    },
+    "header": {
+      "color": "#071E2F"
+    }
+  },
+  "dataColors": [
+    "#071E2F",
+    "#80AEBE",
+    "#D1783C",
+    "#C0C5D5",
+    "#E8EEFA",
+    "#14A962",
+    "#CB9B3E",
+    "#AD3F6B"
+  ],
+  "bad": "#AD3F6B",
+  "neutral": "#CB9B3E",
+  "good": "#14A962",
+  "visualStyles": {
+    "page": {
+      "*": {
+        "background": [
+          {
+            "transparency": 0,
+            "color": {
+              "solid": {
+                "color": "#FAFAFA"
+              }
+            }
+          }
+        ],
+        "outspace": [
+          {
+            "color": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "*": {
+      "*": {
+        "background": [
+          {
+            "transparency": 100
+          }
+        ],
+        "border": [
+          {
+            "show": false
+          }
+        ],
+        "visualHeader": [
+          {
+            "foreground": {
+              "solid": {
+                "color": "#071E2F"
+              }
+            }
+          }
+        ],
+        "visualTooltip": [
+          {
+            "themedTitleFontColor": {
+              "solid": {
+                "color": "#071E2F"
+              }
+            },
+            "themedValueFontColor": {
+              "solid": {
+                "color": "#071E2F"
+              }
+            },
+            "actionFontColor": {
+              "solid": {
+                "color": "#071E2F"
+              }
+            }
+          }
+        ],
+        "visualHeaderTooltip": [
+          {
+            "themedTitleFontColor": {
+              "solid": {
+                "color": "#071E2F"
+              }
+            }
+          }
+        ],
+        "outspacePane": [
+          {
+            "backgroundColor": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            }
+          }
+        ],
+        "filterCard": [
+          {
+            "$id": "Applied",
+            "backgroundColor": {
+              "solid": {
+                "color": "#C0C5D5"
+              }
+            },
+            "transparency": 0
+          },
+          {
+            "$id": "Available",
+            "backgroundColor": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "transparency": 0
+          }
+        ]
+      }
+    }
+  },
+  "backgroundLight": "#071E2F",
+  "background": "#E8EEFA",
+  "backgroundNeutral": "#E8EEFA",
+  "foregroundNeutralSecondary": "#071E2F"
+}

@@ -1,0 +1,153 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "1900d58fd0a0afc66e40",
+  "displayName": "Mapa de Calor",
+  "displayOption": "FitToPage",
+  "height": 1080,
+  "width": 1920,
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "image": {
+            "image": {
+              "name": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'bMapaCalor.png'"
+                  }
+                }
+              },
+              "url": {
+                "expr": {
+                  "ResourcePackageItem": {
+                    "PackageName": "RegisteredResources",
+                    "PackageType": 1,
+                    "ItemName": "bMapaCalor635330841471037.png"
+                  }
+                }
+              },
+              "scaling": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'Fit'"
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "b619ba38127f133a08a9",
+      "target": "d498d89a87b8c8114b02",
+      "type": "NoFilter"
+    },
+    {
+      "source": "6dcd9ab63ccf3217f126",
+      "target": "d498d89a87b8c8114b02",
+      "type": "NoFilter"
+    },
+    {
+      "source": "6dcd9ab63ccf3217f126",
+      "target": "b619ba38127f133a08a9",
+      "type": "NoFilter"
+    },
+    {
+      "source": "d498d89a87b8c8114b02",
+      "target": "6dcd9ab63ccf3217f126",
+      "type": "NoFilter"
+    },
+    {
+      "source": "d498d89a87b8c8114b02",
+      "target": "b619ba38127f133a08a9",
+      "type": "NoFilter"
+    },
+    {
+      "source": "b619ba38127f133a08a9",
+      "target": "6dcd9ab63ccf3217f126",
+      "type": "NoFilter"
+    },
+    {
+      "source": "f41fd4244d18f09dda2b",
+      "target": "16af4bf10ce67b8dda9d",
+      "type": "NoFilter"
+    },
+    {
+      "source": "f41fd4244d18f09dda2b",
+      "target": "d498d89a87b8c8114b02",
+      "type": "NoFilter"
+    },
+    {
+      "source": "f41fd4244d18f09dda2b",
+      "target": "6dcd9ab63ccf3217f126",
+      "type": "NoFilter"
+    },
+    {
+      "source": "f41fd4244d18f09dda2b",
+      "target": "b619ba38127f133a08a9",
+      "type": "NoFilter"
+    },
+    {
+      "source": "16af4bf10ce67b8dda9d",
+      "target": "f41fd4244d18f09dda2b",
+      "type": "NoFilter"
+    },
+    {
+      "source": "16af4bf10ce67b8dda9d",
+      "target": "d498d89a87b8c8114b02",
+      "type": "NoFilter"
+    },
+    {
+      "source": "16af4bf10ce67b8dda9d",
+      "target": "6dcd9ab63ccf3217f126",
+      "type": "NoFilter"
+    },
+    {
+      "source": "16af4bf10ce67b8dda9d",
+      "target": "b619ba38127f133a08a9",
+      "type": "NoFilter"
+    },
+    {
+      "source": "6dcd9ab63ccf3217f126",
+      "target": "f41fd4244d18f09dda2b",
+      "type": "NoFilter"
+    },
+    {
+      "source": "6dcd9ab63ccf3217f126",
+      "target": "16af4bf10ce67b8dda9d",
+      "type": "NoFilter"
+    },
+    {
+      "source": "d498d89a87b8c8114b02",
+      "target": "f41fd4244d18f09dda2b",
+      "type": "NoFilter"
+    },
+    {
+      "source": "d498d89a87b8c8114b02",
+      "target": "16af4bf10ce67b8dda9d",
+      "type": "NoFilter"
+    },
+    {
+      "source": "b619ba38127f133a08a9",
+      "target": "16af4bf10ce67b8dda9d",
+      "type": "NoFilter"
+    },
+    {
+      "source": "b619ba38127f133a08a9",
+      "target": "f41fd4244d18f09dda2b",
+      "type": "NoFilter"
+    }
+  ]
+}

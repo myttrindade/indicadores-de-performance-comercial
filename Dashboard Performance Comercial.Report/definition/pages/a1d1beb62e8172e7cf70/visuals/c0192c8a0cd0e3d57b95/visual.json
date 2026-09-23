@@ -1,0 +1,43 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "c0192c8a0cd0e3d57b95",
+  "position": {
+    "x": 1424.7291487532245,
+    "y": 104.00687876182288,
+    "z": 6006,
+    "height": 295.51160791057612,
+    "width": 462.25279449699053,
+    "tabOrder": 6006
+  },
+  "visual": {
+    "visualType": "image",
+    "objects": {
+      "image": [
+        {
+          "properties": {
+            "sourceType": {
+              "expr": {
+                "Literal": {
+                  "Value": "'imageData'"
+                }
+              }
+            },
+            "sourceField": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Medidas"
+                    }
+                  },
+                  "Property": "Imagem Velocimetro"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

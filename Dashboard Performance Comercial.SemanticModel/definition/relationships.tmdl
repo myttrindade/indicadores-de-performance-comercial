@@ -1,0 +1,41 @@
+relationship 5fb44912-64db-2b12-9843-3ee7f086f7e9
+	fromColumn: fVendas.'Id Cliente'
+	toColumn: dClientes.'Id Cliente'
+
+relationship f16c7392-8eec-bd5a-3e21-e96100a97a23
+	fromColumn: fVendas.'Id Pgto'
+	toColumn: dPagamentos.'Id Pagamento'
+
+relationship d2b8d1ba-cca5-1bf6-ad6d-e1dc98243b83
+	fromColumn: fMetas.'Id Vendedor'
+	toColumn: dVendedores.'Id Vendedor'
+
+relationship eec37874-bc9f-bfdd-929d-f37f193374af
+	fromColumn: fVendas.'Id Vendedor'
+	toColumn: dVendedores.'Id Vendedor'
+
+relationship e1f96c2f-edc8-6e4c-43f4-495c4fc85d67
+	fromColumn: fVendas.'Id Unidade'
+	toColumn: dUnidades.'Id Unidade'
+
+relationship 2b0a3067-c56b-6abc-9042-fbcf101e8ca4
+	fromColumn: fVendas.'Id Status'
+	toColumn: dStatus.'Id Status'
+
+relationship 8158feb5-d2b2-2eb6-2d80-bafb4c746d54
+	fromColumn: fVendas.'Id Produto'
+	toColumn: dProdutos.'Id Produto'
+
+relationship ddb2475b-dd27-2fda-a70a-733c67830afe
+	fromColumn: fVendas.'Data Pedido'
+	toColumn: dCalendario.Data
+
+relationship 142c1fe4-41e7-aa9c-1e8d-79343a984229
+	fromColumn: fMetas.Data
+	toColumn: dCalendario.Data
+
+relationship b8b05c82-ecb3-4484-682e-6bd5d81f3d12
+	isActive: false
+	fromColumn: fVendas.'Data Envio'
+	toColumn: dCalendario.Data
+

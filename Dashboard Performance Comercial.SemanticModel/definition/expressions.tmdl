@@ -1,0 +1,36 @@
+expression dCidades =
+		let
+		    Source = Excel.Workbook(File.Contents(dCaminho), null, true),
+		    Cidades_Table = Source{[Item="Cidades",Kind="Table"]}[Data],
+		    #"Changed Type" = Table.TransformColumnTypes(Cidades_Table,{{"Id Cidade", Int64.Type}, {"Cidade", type text}, {"UF", type text}, {"Estado", type text}}),
+		    #"Trimmed Text" = Table.TransformColumns(#"Changed Type",{{"Estado", Text.Trim, type text}})
+		in
+		    #"Trimmed Text"
+	lineageTag: ef8ee94a-07c5-4a93-8c10-3163c3bff94c
+	queryGroup: Dimensao
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression dCaminho = "C:\Users\maith\Documents\data-analytics-portfolio\Power BI\Performance Comercial\Dados Ficticios\Dimensoes.xlsx" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 3a39b2ff-056a-43c0-9d4b-ebc90a4ff57f
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression fCaminho = "C:\Users\maith\Documents\data-analytics-portfolio\Power BI\Performance Comercial\Dados Ficticios\Vendas.xlsx" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 8494ccd6-a00c-4e3f-9955-845f3bdee639
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression fCaminhoMetas = "C:\Users\maith\Documents\data-analytics-portfolio\Power BI\Performance Comercial\Dados Ficticios\Metas.xlsx" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: f09de544-821b-4689-9abf-8f00e7ed95ec
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+

@@ -1,0 +1,35 @@
+table dPagamentos
+	lineageTag: c1aab7f6-d334-4cc9-bf92-d0854934fc37
+
+	column 'Id Pagamento'
+		dataType: int64
+		formatString: 0
+		lineageTag: 71287826-0d13-445d-9163-921d131c68a1
+		summarizeBy: none
+		sourceColumn: Id Pagamento
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Forma de Pagamento'
+		dataType: string
+		lineageTag: fb75e8da-f484-40f8-a3fb-0d6bdd276832
+		summarizeBy: none
+		sourceColumn: Forma de Pagamento
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dPagamentos = m
+		mode: import
+		queryGroup: Dimensao
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents(dCaminho), null, true),
+				    Pagamento_Table = Source{[Item="Pagamento",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Pagamento_Table,{{"Id Pagamento", Int64.Type}, {"Forma de Pagamento", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

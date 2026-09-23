@@ -1,0 +1,128 @@
+DEFINE
+    FUNCTION fnImagemVariacao = (
+        variacao_valor: SCALAR DECIMAL VAL
+    ) =>
+
+VAR vValor = variacao_valor
+
+VAR vValorFormt = 
+FORMAT(
+    vValor + 0,
+    "+0.00%; -0.00%; Sem Variação "
+)
+
+VAR vSeta = 
+SWITCH(
+    TRUE(),
+    vValor > 0, "⮝",
+    vValor <0, "⮟"
+)
+
+VAR vCorVariacao = 
+SWITCH(
+    TRUE(),
+    vValor > 0 , "#14A962",
+    vValor < 0, "#AD3F6B",
+    "#586878"
+)
+
+VAR vAnimicao = 
+
+IF(
+    vValor < 0,
+    "animation"
+)
+
+VAR vPrefixo = "data:image/svg+xml,"
+
+RETURN
+
+vPrefixo & 
+
+"
+
+<svg
+    width='190'
+    height='50'
+    viewBox='0 0 190 50'
+    fill='none'
+    xmlns='http://www.w3.org/2000/svg'
+>
+
+
+    <style>
+        #value, #seta {
+                " & vAnimicao & ": blink-1 2.5s infinite both;
+        }
+
+        @keyframes blink-1 {
+            0%,
+            50%,
+            100% {
+                opacity: 1;
+            }
+            25%,
+            75% {
+                opacity: 0;
+            }
+        }
+
+
+    </style>
+    
+    <g id='cVariacao' opacity='0.7'>
+
+        
+        <text
+            id='label'
+            fill='#071E2F'
+            font-family='Segoe UI'
+            font-size='12'
+            font-weight='500'
+        >
+            
+            <tspan x='84' y='37.9688'>
+                Vs. Ano Antereior
+            
+            </tspan>
+        
+        </text>
+
+        
+        <text
+            id='value'
+            fill='" & vCorVariacao & "'
+            font-family='Segoe UI'
+            font-size='15'
+            font-weight='700'
+        >
+            
+            <tspan x='83' y='25.2109'>
+                " & vValorFormt & "
+            
+            </tspan>
+        
+        </text>
+
+        
+        <text
+            id='seta'
+            fill='" & vCorVariacao & "'
+            font-family='Segoe UI'
+            font-size='15'
+            font-weight='700'
+        >
+            
+            <tspan x='66' y='33.2109'>
+                " & vSeta & "
+            
+            </tspan>
+        
+        </text>
+
+    
+    </g>
+
+</svg>
+"
+    
