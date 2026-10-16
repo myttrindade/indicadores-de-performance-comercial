@@ -24,18 +24,13 @@
             },
             "sourceField": {
               "expr": {
-                "Aggregation": {
+                "Measure": {
                   "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "dVendedores"
-                        }
-                      },
-                      "Property": "URL Foto"
+                    "SourceRef": {
+                      "Entity": "Medidas"
                     }
                   },
-                  "Function": 3
+                  "Property": "Imagem Avatar Vendedor"
                 }
               }
             },

@@ -1371,6 +1371,63 @@ table Medidas
 		lineageTag: 1e7bb996-4407-4469-9b86-1e98c05f89fd
 		dataCategory: ImageUrl
 
+	measure 'Imagem Avatar Vendedor' = ```
+			
+			
+			VAR vNome =
+			TRIM ( SELECTEDVALUE ( dVendedores[Vendedor], "" ) )
+			
+			VAR vTextoPath =
+			SUBSTITUTE ( vNome, " ", "|" )
+			
+			VAR vUltimaPalavra =
+			PATHITEM ( vTextoPath, PATHLENGTH ( vTextoPath ) )
+			
+			VAR vIniciais =
+			UPPER ( LEFT ( vNome, 1 ) & LEFT ( vUltimaPalavra, 1 ) )
+			
+			VAR vPrefixo = "data:image/svg+xml,"
+			
+			RETURN
+			
+			IF (
+			    vNome = "",
+			    BLANK (),
+			    vPrefixo &
+			    "
+			    <svg
+			        width='198'
+			        height='215'
+			        viewBox='0 0 198 215'
+			        fill='none'
+			        xmlns='http://www.w3.org/2000/svg'
+			    >
+			        <defs>
+			            <linearGradient id='fundo' x1='0' y1='0' x2='1' y2='1'>
+			                <stop offset='0' stop-color='#8D6BFF'/>
+			                <stop offset='1' stop-color='#3A1BA8'/>
+			            </linearGradient>
+			        </defs>
+			        <rect width='198' height='215' rx='18' fill='url(#fundo)'/>
+			        <circle cx='99' cy='88' r='46' fill='white' fill-opacity='0.14'/>
+			        <text
+			            x='99'
+			            y='114'
+			            text-anchor='middle'
+			            fill='white'
+			            font-family='Segoe UI'
+			            font-size='66'
+			            font-weight='bold'
+			        >" & vIniciais & "</text>
+			        <rect x='64' y='160' width='70' height='7' rx='3.5' fill='#C6FF00'/>
+			    </svg>
+			    "
+			)
+			```
+		displayFolder: 00.Visuais\Vendedores\SVG
+		lineageTag: 66962845-6020-49a9-b8e0-c9935afbeeb4
+		dataCategory: ImageUrl
+
 	partition Medidas = m
 		mode: import
 		source =
