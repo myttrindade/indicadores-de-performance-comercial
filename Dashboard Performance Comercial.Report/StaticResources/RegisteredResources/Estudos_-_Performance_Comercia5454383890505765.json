@@ -3,26 +3,26 @@
   "textClasses": {
     "label": {
       "fontSize": 11,
-      "color": "#13072F"
+      "color": "#1B0F3A"
     },
     "title": {
       "fontFace": "'Segoe UI', wf_segoe-ui_normal, helvetica, arial, sans-serif",
       "fontSize": 14,
-      "color": "#13072F"
+      "color": "#1B0F3A"
     },
     "callout": {
-      "color": "#13072F"
+      "color": "#1B0F3A"
     },
     "header": {
-      "color": "#13072F"
+      "color": "#1B0F3A"
     }
   },
   "dataColors": [
-    "#13072F",
-    "#9C80BE",
-    "#D1783C",
-    "#CDC0D5",
-    "#F2E8FA",
+    "#5E34F7",
+    "#8D6BFF",
+    "#3A1BA8",
+    "#B8A4FF",
+    "#E1DBFF",
     "#14A962",
     "#CB9B3E",
     "#AD3F6B"
@@ -70,7 +70,7 @@
           {
             "foreground": {
               "solid": {
-                "color": "#13072F"
+                "color": "#1B0F3A"
               }
             }
           }
@@ -79,17 +79,17 @@
           {
             "themedTitleFontColor": {
               "solid": {
-                "color": "#13072F"
+                "color": "#1B0F3A"
               }
             },
             "themedValueFontColor": {
               "solid": {
-                "color": "#13072F"
+                "color": "#1B0F3A"
               }
             },
             "actionFontColor": {
               "solid": {
-                "color": "#13072F"
+                "color": "#1B0F3A"
               }
             }
           }
@@ -98,7 +98,7 @@
           {
             "themedTitleFontColor": {
               "solid": {
-                "color": "#13072F"
+                "color": "#1B0F3A"
               }
             }
           }
@@ -117,7 +117,7 @@
             "$id": "Applied",
             "backgroundColor": {
               "solid": {
-                "color": "#CDC0D5"
+                "color": "#C9C2EA"
               }
             },
             "transparency": 0
@@ -135,8 +135,8 @@
       }
     }
   },
-  "backgroundLight": "#13072F",
-  "background": "#F2E8FA",
-  "backgroundNeutral": "#F2E8FA",
-  "foregroundNeutralSecondary": "#13072F"
+  "backgroundLight": "#1B0F3A",
+  "background": "#F1EEFF",
+  "backgroundNeutral": "#F1EEFF",
+  "foregroundNeutralSecondary": "#1B0F3A"
 }

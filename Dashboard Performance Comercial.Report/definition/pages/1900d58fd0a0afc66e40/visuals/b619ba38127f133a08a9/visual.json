@@ -124,14 +124,14 @@
                           "min": {
                             "color": {
                               "Literal": {
-                                "Value": "'#D8CFE3'"
+                                "Value": "'#E1DBFF'"
                               }
                             }
                           },
                           "max": {
                             "color": {
                               "Literal": {
-                                "Value": "'#13072F'"
+                                "Value": "'#5E34F7'"
                               }
                             }
                           },
