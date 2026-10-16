@@ -3,10 +3,10 @@
   "name": "fccf842fe69ba53204fe",
   "position": {
     "x": 0,
-    "y": 53.883364342079929,
+    "y": 53.88336434207993,
     "z": 1000,
-    "height": 920.76730608840694,
-    "width": 507.62301918265217,
+    "height": 920.7673060884069,
+    "width": 507.6230191826522,
     "tabOrder": 1000
   },
   "visual": {
@@ -450,7 +450,7 @@
                   "color": {
                     "expr": {
                       "Literal": {
-                        "Value": "'#716A82'"
+                        "Value": "'#9C8FD6'"
                       }
                     }
                   }
@@ -461,7 +461,7 @@
                   "color": {
                     "expr": {
                       "Literal": {
-                        "Value": "'#BD6589'"
+                        "Value": "'#bd6589'"
                       }
                     }
                   }
@@ -472,7 +472,7 @@
                   "color": {
                     "expr": {
                       "Literal": {
-                        "Value": "'#13072F'"
+                        "Value": "'#5E34F7'"
                       }
                     }
                   }
@@ -513,7 +513,7 @@
                   "color": {
                     "expr": {
                       "Literal": {
-                        "Value": "'#716A82'"
+                        "Value": "'#9C8FD6'"
                       }
                     }
                   }
@@ -524,7 +524,7 @@
                   "color": {
                     "expr": {
                       "Literal": {
-                        "Value": "'#BD6589'"
+                        "Value": "'#bd6589'"
                       }
                     }
                   }
@@ -535,7 +535,7 @@
                   "color": {
                     "expr": {
                       "Literal": {
-                        "Value": "'#13072F'"
+                        "Value": "'#5E34F7'"
                       }
                     }
                   }

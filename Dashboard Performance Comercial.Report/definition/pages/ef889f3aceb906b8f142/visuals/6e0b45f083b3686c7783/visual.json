@@ -2,8 +2,8 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "6e0b45f083b3686c7783",
   "position": {
-    "x": 17.733990147783249,
-    "y": 16.071428571428569,
+    "x": 17.73399014778325,
+    "y": 16.07142857142857,
     "z": 0,
     "height": 418.9655172413793,
     "width": 396.243842364532,
@@ -425,7 +425,7 @@
                   "color": {
                     "expr": {
                       "Literal": {
-                        "Value": "'#716A82'"
+                        "Value": "'#9C8FD6'"
                       }
                     }
                   }
@@ -436,7 +436,7 @@
                   "color": {
                     "expr": {
                       "Literal": {
-                        "Value": "'#BD6589'"
+                        "Value": "'#bd6589'"
                       }
                     }
                   }
@@ -447,7 +447,7 @@
                   "color": {
                     "expr": {
                       "Literal": {
-                        "Value": "'#13072F'"
+                        "Value": "'#5E34F7'"
                       }
                     }
                   }
@@ -488,7 +488,7 @@
                   "color": {
                     "expr": {
                       "Literal": {
-                        "Value": "'#8B81D0'"
+                        "Value": "'#8D6BFF'"
                       }
                     }
                   }
@@ -499,7 +499,7 @@
                   "color": {
                     "expr": {
                       "Literal": {
-                        "Value": "'#BD6589'"
+                        "Value": "'#bd6589'"
                       }
                     }
                   }
@@ -510,7 +510,7 @@
                   "color": {
                     "expr": {
                       "Literal": {
-                        "Value": "'#13072F'"
+                        "Value": "'#5E34F7'"
                       }
                     }
                   }

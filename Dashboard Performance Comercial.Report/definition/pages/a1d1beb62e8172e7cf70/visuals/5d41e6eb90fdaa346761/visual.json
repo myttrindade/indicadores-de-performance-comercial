@@ -6,7 +6,7 @@
     "y": 511,
     "z": 2000,
     "height": 70,
-    "width": 276.66666666666669,
+    "width": 276.6666666666667,
     "tabOrder": 2000
   },
   "visual": {
@@ -54,14 +54,14 @@
             "singleSelect": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             },
             "strictSingleSelect": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             },
@@ -132,6 +132,53 @@
                     }
                   }
                 }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "filter": {
+              "filter": {
+                "Version": 2,
+                "From": [
+                  {
+                    "Name": "d",
+                    "Entity": "dVendedores",
+                    "Type": 0
+                  }
+                ],
+                "Where": [
+                  {
+                    "Condition": {
+                      "In": {
+                        "Expressions": [
+                          {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "d"
+                                }
+                              },
+                              "Property": "Vendedor"
+                            }
+                          }
+                        ],
+                        "Values": [
+                          [
+                            {
+                              "Literal": {
+                                "Value": "'Lilia'"
+                              }
+                            }
+                          ]
+                        ]
+                      }
+                    }
+                  }
+                ]
               }
             }
           }
@@ -375,7 +422,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#13072F'"
+                      "Value": "'#1B0F3A'"
                     }
                   }
                 }
@@ -386,7 +433,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#13072F'"
+                      "Value": "'#1B0F3A'"
                     }
                   }
                 }
@@ -397,7 +444,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#13072F'"
+                      "Value": "'#1B0F3A'"
                     }
                   }
                 }
@@ -414,7 +461,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#13072F'"
+                      "Value": "'#1B0F3A'"
                     }
                   }
                 }
@@ -431,7 +478,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#13072F'"
+                      "Value": "'#1B0F3A'"
                     }
                   }
                 }
